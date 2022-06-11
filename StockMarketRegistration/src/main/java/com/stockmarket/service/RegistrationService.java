@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.stockmarket.StockMarketException;
+import com.stockmarket.exception.StockMarketException;
 import com.stockmarket.helper.CompanyHelper;
 import com.stockmarket.model.Company;
 import com.stockmarket.repository.RegistrationRepository;

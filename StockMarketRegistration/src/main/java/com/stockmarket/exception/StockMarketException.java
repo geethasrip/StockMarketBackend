@@ -1,4 +1,4 @@
-package com.stockmarket;
+package com.stockmarket.exception;
 
 public class StockMarketException extends RuntimeException {
 
