@@ -17,14 +17,14 @@ public class Company implements Serializable{
 	
 	@Id
 	@Column(name="CD_COMPANY")
-	private String CompanyCode;
+	private String companyCode;
 	@Column(name="NM_COMPANY")
-	private String CompanyName;
+	private String companyName;
 	@Column(name="CEO")
-	private String CompanyCEO;
+	private String companyCEO;
 	@Column(name="TURNOVER")
-	private Integer CompanyTurnover;
+	private Integer companyTurnover;
 	@Column(name="WEBSITE")
-	private String CompanyWebsite;
+	private String companyWebsite;
 
 }

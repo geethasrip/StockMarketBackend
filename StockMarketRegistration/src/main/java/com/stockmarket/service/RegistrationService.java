@@ -1,8 +1,14 @@
 package com.stockmarket.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stockmarket.StockMarketException;
+import com.stockmarket.helper.CompanyHelper;
 import com.stockmarket.model.Company;
 import com.stockmarket.repository.RegistrationRepository;
 
@@ -11,20 +17,39 @@ public class RegistrationService {
 	@Autowired
 	RegistrationRepository repository;
 
-	public Company registerCompany(Company company) {
+	public Company registerCompany(CompanyHelper companyDto) {
 		Company companyUptated = null;
-		Company existingCompany = null;
-		if (company.getCompanyTurnover() > 100000000) {
-			existingCompany = repository.getById(company.getCompanyCode());
-			if (existingCompany != null)
+		if (companyDto.getCompanyTurnover() > 100000000) {
+			Optional<Company> existingCompany = repository.findById(companyDto.getCompanyCode());
+			if (existingCompany.isPresent())
+				throw new StockMarketException("Company already exists");
+			else {
+				Company company = new Company();
+				BeanUtils.copyProperties(companyDto, company);
 				companyUptated = repository.save(company);
-			else
-				throw new RuntimeException("Company already exists");
+			}
 		} else {
-			throw new RuntimeException("Company turnover less than 10 crs");
+			throw new StockMarketException("Company turnover less than 10 crs");
 		}
 
 		return companyUptated;
+
+	}
+
+	public Company fetchCompany(String id) {
+		Optional<Company> company1 = repository.findById(id);
+		if (company1.isPresent())
+			return company1.get();
+		else
+			throw new StockMarketException("No Company exists with given Id");
+	}
+
+	public void deleteCompany(String id) {
+		repository.deleteById(id);
+	}
+
+	public List<Company> fetchAllCompanies() {
+		return repository.findAll();
 
 	}
 
