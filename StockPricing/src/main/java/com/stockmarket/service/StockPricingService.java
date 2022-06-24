@@ -27,6 +27,7 @@ public class StockPricingService {
 	public CompanyHelper viewStockDetails(String companyCode, Date startDate, Date endDate) {
 		CompanyHelper companyHelper = new CompanyHelper();
 		List<Stock> stockList = repository.fetchStockList(companyCode, startDate, endDate);
+		if(!stockList.isEmpty()) {
 		Double min = stockList.get(0).getStockPrice();
 		Double max = stockList.get(0).getStockPrice();
 		Double sum = 0.0;
@@ -46,7 +47,9 @@ public class StockPricingService {
 		companyHelper.setAverageStockPrice(average);
 		companyHelper.setMaxStockPrice(max);
 		companyHelper.setMinStockPrice(min);
+		
+	}
 		return companyHelper;
 	}
-
+	
 }
