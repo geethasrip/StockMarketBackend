@@ -17,11 +17,15 @@ import lombok.Data;
 public class Stock {
 	@Column(name = "CD_COMPANY")
 	private String companyCode;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer stockCode;
+	@Column(name = "STOCK_CODE")
+	private int stockCode;
+	
 	@Column(name = "STOCK_PRICE")
 	private Double stockPrice;
+	
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date tmStamp;
 

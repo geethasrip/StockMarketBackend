@@ -22,15 +22,17 @@ public class StockPricingController {
 
 	@Autowired
 	StockPricingService stockPricingService;
+
 	@PostMapping("/add")
 	@ResponseBody
 	public Stock addStock(@RequestBody StockDto stock) {
 		return stockPricingService.addStock(stock);
 	}
-	
+
 	@GetMapping("/get/{companyCode}/{startDate}/{endDate}")
-	public CompanyHelper viewStockDetails(@PathVariable String companyCode,@PathVariable Date startDate,@PathVariable Date endDate) {
-		return stockPricingService.viewStockDetails(companyCode,startDate,endDate);
+	public CompanyHelper viewStockDetails(@PathVariable String companyCode, @PathVariable Date startDate,
+			@PathVariable Date endDate) {
+		return stockPricingService.viewStockDetails(companyCode, startDate, endDate);
 	}
-	
+
 }
