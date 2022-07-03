@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.stockmarket.service.IUserService;
 
 @RestController
 @RequestMapping("/api/v1.0/market/auth")
+
 public class UserController {
 	Logger logger=LoggerFactory.getLogger(UserController.class);
 
@@ -27,14 +29,17 @@ public class UserController {
 	@Autowired
 	private JwtUtil jwtUtil;
 
+	
 	@PostMapping("/registeradmin")
 	public ResponseEntity<String> saveUser(@RequestBody User user) {
 		Integer id=service.saveUser(user);
 		logger.info("user details saved succesfully");
-		return ResponseEntity.ok("User saved with id"+id);
+		return ResponseEntity.ok("User saved succesfully");
 	}
 
+	
 	@PostMapping("/login")
+	//@CrossOrigin(origins = "http://localhost:3000/,maxAge = 3600")
 	public ResponseEntity<?> loginUser(@RequestBody UserRequest userRequest)
 	{
 		if(service.isUserExist(userRequest))

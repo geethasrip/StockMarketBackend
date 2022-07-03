@@ -38,7 +38,7 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public boolean isUserExist(UserRequest userRequest) {
 		User user = findByUsername(userRequest.getUsername());
-		if(user.getPassword().equals(userRequest.getPassword()))
+		if(bCryptPasswordEncoder.matches(userRequest.getPassword(),user.getPassword()))
 			return true;
 		else 
 			return false;

@@ -1,5 +1,9 @@
 package com.stockmarket.helper;
 
+import java.util.List;
+
+import com.stockmarket.dto.StockDto;
+
 import lombok.Data;
 
 @Data
@@ -9,9 +13,8 @@ public class CompanyHelper {
 	private String companyCEO;
 	private Integer companyTurnover;
 	private String companyWebsite;
-	private Double stockPrice;
-	private String startDate;
-	private String endDate;
+	private List<StockDto> stockList;
+	private String stockExchange;
 	private Double minStockPrice;
 	private Double maxStockPrice;
 	private Double averageStockPrice;

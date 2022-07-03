@@ -1,6 +1,7 @@
 package com.stockmarket.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,6 @@ import lombok.Data;
 @Data
 @Entity
 public class Company implements Serializable{
-	
 	
 	private static final long serialVersionUID = -3764503867770589072L;
 	
@@ -26,5 +26,9 @@ public class Company implements Serializable{
 	private Integer companyTurnover;
 	@Column(name="WEBSITE")
 	private String companyWebsite;
+	@Column(name="STOCK_EXCHANGE")
+	private String stockExchange;
+	@Column(name="TM_STAMP")
+	private Date tm_Stamp;
 
 }
