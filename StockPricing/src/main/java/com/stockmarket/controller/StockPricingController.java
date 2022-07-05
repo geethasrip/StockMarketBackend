@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,29 +29,35 @@ public class StockPricingController {
 	StockPricingService stockPricingService;
 
 	@PostMapping("/add")
-	public Stock addStock(@RequestBody StockDto stock) {
-		return stockPricingService.addStock(stock);
+	public ResponseEntity<Stock> addStock(@RequestBody StockDto stock) {
+		Stock st= stockPricingService.addStock(stock);
+		return new ResponseEntity<>(st,HttpStatus.OK);
+		 
 	}
 
 	@GetMapping("/get/{companyCode}/{startDate}/{endDate}")
-	public CompanyHelper viewStockDetails(@PathVariable String companyCode, @PathVariable Date startDate,
+	public ResponseEntity<CompanyHelper> viewStockDetails(@PathVariable String companyCode, @PathVariable Date startDate,
 			@PathVariable Date endDate) {
-		return stockPricingService.viewStockDetails(companyCode, startDate, endDate);
+		CompanyHelper com=	stockPricingService.viewStockDetails(companyCode, startDate, endDate);
+		return new ResponseEntity<>(com,HttpStatus.OK);
 	}
 
 	@GetMapping("/getLatestStockPrice/{companyCode}")
-	public Double getLatestStockPrice(@PathVariable String companyCode) {
-		return stockPricingService.getLatestStockPrice(companyCode);
+	public ResponseEntity<Double> getLatestStockPrice(@PathVariable String companyCode) {
+		Double com=stockPricingService.getLatestStockPrice(companyCode);
+		 return new ResponseEntity<>(com,HttpStatus.OK);
 	}
 
 	@GetMapping("getStock/{companyCode}")
-	public List<Stock> getStockList(@PathVariable String companyCode) {
-		return stockPricingService.getStockList(companyCode);
+	public ResponseEntity<List<Stock>> getStockList(@PathVariable String companyCode) {
+		 List<Stock> st=stockPricingService.getStockList(companyCode);
+		 return new ResponseEntity<>(st,HttpStatus.OK);
 	}
 
 	@DeleteMapping("delete/{companyCode}")
-	public String deleteStock(@PathVariable String companyCode) {
-		return stockPricingService.deleteStock(companyCode);
+	public ResponseEntity<String> deleteStock(@PathVariable String companyCode) {
+		String str= stockPricingService.deleteStock(companyCode);
+		return new ResponseEntity<>(str,HttpStatus.OK);
 	}
 	
 }

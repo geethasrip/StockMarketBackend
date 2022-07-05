@@ -29,6 +29,6 @@ public class Company implements Serializable{
 	@Column(name="STOCK_EXCHANGE")
 	private String stockExchange;
 	@Column(name="TM_STAMP")
-	private Date tm_Stamp;
+	private Date tmStamp;
 
 }

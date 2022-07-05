@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.stockmarket.dto.StockDto;
 import com.stockmarket.model.Stock;
 
 public interface StockPricingRepository extends JpaRepository<Stock, Integer> {

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stockmarket.exception.StockMarketException;
 import com.stockmarket.helper.CompanyHelper;
 import com.stockmarket.model.Company;
 import com.stockmarket.service.RegistrationService;
@@ -31,38 +30,33 @@ public class RegistrationController {
 	RegistrationService service;
 
 	@PostMapping("/register")
-	public Company registerCompany(@RequestBody CompanyHelper company) {
+	public ResponseEntity<Company> registerCompany(@RequestBody CompanyHelper company) {
 		
-		return service.registerCompany(company);
+		Company result= service.registerCompany(company);
+		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	@GetMapping("/info/{id}")
-	public ResponseEntity<?> fetchCompany(@PathVariable String id) {
-		try {
+	public ResponseEntity<CompanyHelper> fetchCompany(@PathVariable String id) {
 		CompanyHelper company=service.fetchCompany(id);
 		return new ResponseEntity<>(company,HttpStatus.OK);
-		}catch (StockMarketException e) {
-			return new ResponseEntity<>(e,HttpStatus.EXPECTATION_FAILED);
-		}
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public String deleteCompany(@PathVariable String id) {
+	public ResponseEntity<String> deleteCompany(@PathVariable String id) {
 		String result=null;
-		try {
 		service.deleteCompany(id);
 		result="Company Deleted Successfully";
-		}catch (Exception e) {
-			result="Something went wrong, Deletion unsuccessful";
-			logger.error(e.getMessage());
-		}
-		return result;
+		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	@GetMapping("/getall")
 	@ResponseBody
-	public List<CompanyHelper> fetchAllCompanies() {
-		return service.fetchAllCompanies();
+	public  ResponseEntity<List<CompanyHelper>> fetchAllCompanies() {
+		
+		List<CompanyHelper> list=service.fetchAllCompanies();
+		return new ResponseEntity<>(list,HttpStatus.OK);
+		
 	}
 	
 }

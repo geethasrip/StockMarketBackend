@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.stockmarket.dto.StockDto;
+import com.stockmarket.exception.StockMarketException;
 import com.stockmarket.helper.CompanyHelper;
 import com.stockmarket.model.Stock;
 import com.stockmarket.repository.StockPricingRepository;
@@ -49,48 +50,50 @@ public class StockPricingService {
 		ServiceInstance instance = instances.get(0);
 		URI companyServiceUri = instance.getUri();
 		logger.info("===inside view Stocks====");
-		CompanyHelper companyHelper = new CompanyHelper();
+		CompanyHelper companyHelper = null;
 		StockDto stockDto = new StockDto();
-		List<StockDto> stList = new ArrayList<StockDto>();
+		List<StockDto> stList = new ArrayList<>();
 		ResponseEntity<?> response = null;
 		response = restTemplate.getForEntity(companyServiceUri + "/api/v1.0/market/company/info/" + companyCode,
 				CompanyHelper.class);
 		companyHelper = (CompanyHelper) response.getBody();
-		logger.info("Company details {}", companyHelper);
-		List<Stock> stockList = stockPricingRepository.fetchStockList(companyCode, startDate, endDate);
-		if (!stockList.isEmpty()) {
-			Double min = stockList.get(0).getStockPrice();
-			Double max = stockList.get(0).getStockPrice();
-			Double sum = 0.0;
-			for (Stock stock : stockList) {
-				stockDto.setCompanyCode(stock.getCompanyCode());
-				stockDto.setStockCode(stock.getStockCode());
-				stockDto.setStockPrice(stock.getStockPrice());
-				stockDto.setTmStamp(stock.getTmStamp());
-				if (stock.getStockPrice() < min) {
-					min = stock.getStockPrice();
-				} else if (stock.getStockPrice() > max) {
-					max = stock.getStockPrice();
+		if (companyHelper != null) {
+			logger.info("Company details {}", companyHelper);
+			List<Stock> stockList = stockPricingRepository.fetchStockList(companyCode, startDate, endDate);
+			if (!stockList.isEmpty()) {
+				Double min = stockList.get(0).getStockPrice();
+				Double max = stockList.get(0).getStockPrice();
+				Double sum = 0.0;
+				for (Stock stock : stockList) {
+					stockDto.setCompanyCode(stock.getCompanyCode());
+					stockDto.setStockCode(stock.getStockCode());
+					stockDto.setStockPrice(stock.getStockPrice());
+					stockDto.setTmStamp(stock.getTmStamp());
+					if (stock.getStockPrice() < min) {
+						min = stock.getStockPrice();
+					} else if (stock.getStockPrice() > max) {
+						max = stock.getStockPrice();
+					}
+					sum = sum + stock.getStockPrice();
+					stList.add(stockDto);
 				}
-				sum = sum + stock.getStockPrice();
-				stList.add(stockDto);
-			}
-			Double average;
-			if (stockList.isEmpty())
-				average = 0.0;
-			else
+				Double average;
 				average = sum / stockList.size();
 
-			companyHelper.setAverageStockPrice(average);
-			companyHelper.setMaxStockPrice(max);
-			companyHelper.setMinStockPrice(min);
-			companyHelper.setStockList(stList);
+				companyHelper.setAverageStockPrice(average);
+				companyHelper.setMaxStockPrice(max);
+				companyHelper.setMinStockPrice(min);
+				companyHelper.setStockList(stList);
+			}
+			return companyHelper;
+		} else {
+			throw new StockMarketException("Company does not exist");
 		}
-		return companyHelper;
+
 	}
 
 	public Double getLatestStockPrice(String companyCode) {
-		Double latestStockPrice = null;
+		Double latestStockPrice = 0.0;
 		Date date = new Date(1800, 01, 01);
 		List<Stock> list = stockPricingRepository.findByCompanyCode(companyCode);
 		if (!list.isEmpty()) {
@@ -105,8 +108,7 @@ public class StockPricingService {
 	}
 
 	public List<Stock> getStockList(String companyCode) {
-		List<Stock> list = stockPricingRepository.findByCompanyCode(companyCode);
-		return list;
+		return  stockPricingRepository.findByCompanyCode(companyCode);
 	}
 
 	@Transactional
