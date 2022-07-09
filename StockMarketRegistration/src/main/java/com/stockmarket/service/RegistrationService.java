@@ -32,8 +32,8 @@ public class RegistrationService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	@Value("stockpricinginstance")
-	String stockPricingURl;
+	@Value("${stockpricinginstance}")
+	 String stockPricingURl;
 
 	public Company registerCompany(CompanyHelper companyDto) {
 		companyDto.setTmStamp(new Date());

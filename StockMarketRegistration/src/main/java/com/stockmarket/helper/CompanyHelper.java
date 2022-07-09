@@ -10,7 +10,7 @@ public class CompanyHelper {
 	private String companyCode;
 	private String companyName;
 	private String companyCEO;
-	private Integer companyTurnover;
+	private Long companyTurnover;
 	private String companyWebsite;
 	private String stockExchange;
 	private List<StockDto> stockList;

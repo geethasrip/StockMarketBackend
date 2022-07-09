@@ -23,7 +23,7 @@ public class Company implements Serializable{
 	@Column(name="CEO")
 	private String companyCEO;
 	@Column(name="TURNOVER")
-	private Integer companyTurnover;
+	private Long companyTurnover;
 	@Column(name="WEBSITE")
 	private String companyWebsite;
 	@Column(name="STOCK_EXCHANGE")
